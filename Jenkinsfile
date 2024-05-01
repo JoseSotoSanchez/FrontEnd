@@ -21,7 +21,7 @@ pipeline {
         stage('Push image frontend to Docker Hub'){
             steps{
                 script{
-                   bat 'docker login -u josesotosa -p %asd123asd%'
+                   bat 'docker login -u josesotosa -p asd123asd'
                    bat 'docker push josesotosa/autofix-frontend:latest'
                 }
             }

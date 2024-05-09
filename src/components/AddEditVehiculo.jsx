@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import SaveIcon from "@mui/icons-material/Save";
+import { Container, TableContainer } from "@mui/material";
 
 const AddEditVehiculo = () => {
   const [patente, setPatente] = useState("");
@@ -128,9 +129,18 @@ const AddEditVehiculo = () => {
             id="tipo"
             label="tipo"
             value={tipo}
+            select
             variant="standard"
+            defaultValue="Tipos"
             onChange={(e) => setTipo(e.target.value)}
-          />
+            style={{ width: "100%" }}
+          >
+            <MenuItem value={"SUV"}>SUV</MenuItem>
+            <MenuItem value={"Hatchback"}>Hatchback</MenuItem>
+            <MenuItem value={"Sedan"}>Sedán</MenuItem>
+             <MenuItem value={"Pickup"}>Pickup</MenuItem>
+             <MenuItem value={"Furgoneta"}>Furgoneta</MenuItem>
+          </TextField>
         </FormControl>
 
         <FormControl fullWidth>
@@ -149,9 +159,17 @@ const AddEditVehiculo = () => {
             id="tipo_motor"
             label="tipo_motor"
             value={tipo_motor}
+            select
             variant="standard"
+            defaultValue="Tipo motor"
             onChange={(e) => setTipoMotor(e.target.value)}
-          />
+            style={{ width: "100%" }}
+          >
+            <MenuItem value={"Gasolina"}>Gasolina</MenuItem>
+            <MenuItem value={"diesel"}>Diesel</MenuItem>
+            <MenuItem value={"Hibrido"}>Hibrido</MenuItem>
+             <MenuItem value={"Electrico"}>Electrico</MenuItem>
+          </TextField>
         </FormControl>
 
         <FormControl fullWidth>

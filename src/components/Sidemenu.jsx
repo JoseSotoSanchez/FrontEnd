@@ -38,13 +38,6 @@ export default function Sidemenu({ open, toggleDrawer }) {
           <ListItemText primary="Vehiculos" />
         </ListItemButton>
 
-        <ListItemButton onClick={() => navigate("/reparacion/list")}>
-          <ListItemIcon>
-            <ChecklistRtl />
-          </ListItemIcon>
-          <ListItemText primary="Lista Reparacion" />
-        </ListItemButton>
-
         <ListItemButton onClick={() => navigate("/reparaciones/list")}>
           <ListItemIcon>
             <BuildCircle />
@@ -57,6 +50,27 @@ export default function Sidemenu({ open, toggleDrawer }) {
             <Summarize />
           </ListItemIcon>
           <ListItemText primary="Reporte valores involucrados" />
+        </ListItemButton>
+
+        <ListItemButton onClick={() => navigate("/reparacion/list")}>
+          <ListItemIcon>
+            <ChecklistRtl />
+          </ListItemIcon>
+          <ListItemText primary="Reporte reparaciones" />
+        </ListItemButton>
+      
+        <ListItemButton onClick={() => navigate("/reportes/promedio/list")}>
+          <ListItemIcon>
+            <ChecklistRtl />
+          </ListItemIcon>
+          <ListItemText primary="Reporte promedios reparaciones" />
+        </ListItemButton>
+
+        <ListItemButton onClick={() => navigate("/reportes/reparacion/motor/list")}>
+          <ListItemIcon>
+            <ChecklistRtl />
+          </ListItemIcon>
+          <ListItemText primary="Reporte reparaciones tipo motor" />
         </ListItemButton>
       </List>
 

@@ -10,6 +10,8 @@ import CalcularReparaciones from './components/CalcularReparaciones';
 import NotFound from './components/NotFound';
 import ReparacionesList from './components/ReparacionesList';
 import ReporteList from './components/ReporteList';
+import ReportePromedioList from './components/ReportePromedioList';
+import ReparacionTipoMotorList from './components/ReparacionTipoMotorList';
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
               <Route path="/reparaciones/pagar/:id" element={<AddEditReparaciones/>} />
               <Route path="/reparaciones/calcular/:id" element={<CalcularReparaciones/>} />
               <Route path="/reportes/list" element={<ReporteList/>} />
+              <Route path="/reportes/reparacion/motor/list" element={<ReparacionTipoMotorList/>} />
+              <Route path="/reportes/promedio/list" element={<ReportePromedioList/>} />
               <Route path="/reparacion/list" element={<ReparacionList/>} />
               <Route path="*" element={<NotFound/>} />
             </Routes>

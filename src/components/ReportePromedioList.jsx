@@ -13,20 +13,20 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const ReporteList = () => {
-  const [reportes, setReporte] = useState([]);
+const ReportePromedioList = () => {
+  const [reportes, setReportePromedio] = useState([]);
 
   const navigate = useNavigate();
 
   const init = () => {
     reporteService
-      .getAll()
+      .getPromedioHoras()
       .then((response) => {
         console.log(
           "Mostrando listado de reportes.",
           response.data
         );
-        setReporte(response.data);
+        setReportePromedio(response.data);
       })
       .catch((error) => {
         console.log(
@@ -44,7 +44,7 @@ const ReporteList = () => {
   return (
     <TableContainer component={Paper}>
 
-      <h3>Detalle calculo de valores totales </h3>
+      <h3>Detalle promedio tiempo reparaciones </h3>
       <hr />
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
         <TableHead>
@@ -53,16 +53,10 @@ const ReporteList = () => {
               Id
             </TableCell>
             <TableCell align="right" sx={{ fontWeight: "bold" }}>
-              Id Vehiculo
+              Marca
             </TableCell>
             <TableCell align="right" sx={{ fontWeight: "bold" }}>
-              Patente
-            </TableCell>
-            <TableCell align="right" sx={{ fontWeight: "bold" }}>
-              Valor sumado
-            </TableCell>
-            <TableCell align="right" sx={{ fontWeight: "bold" }}>
-              Detalle
+              Tiempo Promedio (horas)
             </TableCell>
           </TableRow>
         </TableHead>
@@ -73,10 +67,8 @@ const ReporteList = () => {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell align="right">{reporte.id}</TableCell>
-              <TableCell align="right">{reporte.id_vehiculo}</TableCell>
-              <TableCell align="right">{reporte.patente}</TableCell>
-              <TableCell align="right">{reporte.valor}</TableCell>
-              <TableCell align="right">{reporte.tipo}</TableCell>
+              <TableCell align="right">{reporte.marca}</TableCell>
+              <TableCell align="right">{reporte.tiempoPromedio}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -85,4 +77,4 @@ const ReporteList = () => {
   );
 };
 
-export default ReporteList;
+export default ReportePromedioList;

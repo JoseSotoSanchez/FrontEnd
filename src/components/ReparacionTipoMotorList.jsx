@@ -15,14 +15,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import reporteService from "../services/reporte.service";
 
-const ReparacionList = () => {
+const ReparacionTipoMotorList = () => {
   const [reparacion, setReparacion] = useState([]);
 
   const navigate = useNavigate();
 
   const init = () => {
     reporteService
-      .getReparacionesTipo()
+      .getReparacionesTipoMotor()
       .then((response) => {
         console.log("Mostrando listado de todas las reparaciones disponibles.", response.data);
         setReparacion(response.data);
@@ -88,19 +88,16 @@ const ReparacionList = () => {
               Nombre
             </TableCell>
             <TableCell align="left" sx={{ fontWeight: "bold" }}>
-              Tipo Sedan
+              Tipo Gasolina
             </TableCell>
             <TableCell align="left" sx={{ fontWeight: "bold" }}>
-              Tipo Hatchback
+              Tipo Diesel
             </TableCell>
             <TableCell align="left" sx={{ fontWeight: "bold" }}>
-              Tipo SUV
+              Tipo Hibrido
             </TableCell>
             <TableCell align="left" sx={{ fontWeight: "bold" }}>
-              Tipo Pickup
-            </TableCell>
-            <TableCell align="left" sx={{ fontWeight: "bold" }}>
-              Tipo Furgoneta
+              Tipo Electrico
             </TableCell>
             <TableCell align="right" sx={{ fontWeight: "bold" }}>
               Total
@@ -114,11 +111,10 @@ const ReparacionList = () => {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell align="left">{rep.reparacion}</TableCell>
-              <TableCell align="left">{rep.tipo_sedan}</TableCell>
-              <TableCell align="left">{rep.tipo_hatchback}</TableCell>
-              <TableCell align="left">{rep.tipo_suv}</TableCell>
-              <TableCell align="left">{rep.tipo_pickup}</TableCell>
-              <TableCell align="left">{rep.tipo_furgoneta}</TableCell>
+              <TableCell align="left">{rep.tipo_gasolina}</TableCell>
+              <TableCell align="left">{rep.tipo_diesel}</TableCell>
+              <TableCell align="left">{rep.tipo_hibrido}</TableCell>
+              <TableCell align="left">{rep.tipo_electrico}</TableCell>
               <TableCell align="left">{rep.total}</TableCell>
               
             </TableRow>
@@ -129,4 +125,4 @@ const ReparacionList = () => {
   );
 };
 
-export default ReparacionList;
+export default ReparacionTipoMotorList;

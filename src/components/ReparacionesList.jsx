@@ -140,7 +140,7 @@ const ReparacionesList = () => {
                   style={{ marginLeft: "0.5rem" }}
                   startIcon={<EditIcon />}
                 >
-                  Pagar
+                  Pagar Monto
                 </Button>
 
                 <Button

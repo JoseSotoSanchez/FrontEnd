@@ -12,10 +12,11 @@ import Button from "@mui/material/Button";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Calculate from "@mui/icons-material/Calculate";
+import { Typography } from '@mui/material';
 
 const ReparacionesList = () => {
   const [reparacioness, setReparaciones] = useState([]);
+  const [noDatos, setNoDatos] = useState('');
 
   const navigate = useNavigate();
 
@@ -27,6 +28,9 @@ const ReparacionesList = () => {
           "Mostrando listado de reparaciones.",
           response.data
         );
+        if(response.data.length == 0){
+          setNoDatos("No se han encontrado reparaciones")
+        }
         setReparaciones(response.data);
       })
       .catch((error) => {
@@ -40,6 +44,17 @@ const ReparacionesList = () => {
   useEffect(() => {
     init();
   }, []);
+
+  const formatDateTime = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getUTCFullYear();
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const hours = String(date.getUTCHours()).padStart(2, '0');
+    const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+    
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
+  };
 
   const handleDelete = (id) => {
     console.log("Printing id", id);
@@ -71,31 +86,34 @@ const ReparacionesList = () => {
 
 
   return (
+    <>
+    <div>
+        <h2>Lista de reparaciones</h2>
+      </div>
     <TableContainer component={Paper}>
       <br />
       <Link
-        to="/reparaciones/add"
-        style={{ textDecoration: "none", marginBottom: "1rem" }}
-      >
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<PersonAddIcon />}
+          to="/reparaciones/add"
+          style={{ textDecoration: "none", marginBottom: "1rem" }}
         >
-          Añadir Reparacion
-        </Button>
-      </Link>
+          <Button
+            variant="contained"
+            color="primary"
+            className="custom-button"
+            startIcon={<PersonAddIcon />}
+          >
+            Añadir Reparación
+          </Button>
+        </Link>
       <br /> <br />
-      <h3>Lista de reparciones realizadas</h3>
-      <hr />
+        <Typography variant="h7" style={{ marginTop: '20px' , color: 'red'}}>
+        {noDatos}
+      </Typography>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>
             <TableCell align="right" sx={{ fontWeight: "bold" }}>
-              Id
-            </TableCell>
-            <TableCell align="right" sx={{ fontWeight: "bold" }}>
-              Id Vehiculo
+              Patente
             </TableCell>
             <TableCell align="right" sx={{ fontWeight: "bold" }}>
               Tipo reparacion
@@ -123,13 +141,12 @@ const ReparacionesList = () => {
               key={reparacioness.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell align="right">{reparaciones.id}</TableCell>
-              <TableCell align="right">{reparaciones.id_vehiculo}</TableCell>
+              <TableCell align="right">{reparaciones.patente}</TableCell>
               <TableCell align="right">{reparaciones.tipo_reparacion}</TableCell>
               <TableCell align="right">{reparaciones.monto_total}</TableCell>
-              <TableCell align="right">{reparaciones.fecha_ingreso}</TableCell>
-              <TableCell align="right">{reparaciones.fecha_salida}</TableCell>
-              <TableCell align="right">{reparaciones.fecha_entrega_cliente}</TableCell>
+              <TableCell align="right">{formatDateTime(reparaciones.fecha_ingreso)}</TableCell>
+              <TableCell align="right">{formatDateTime(reparaciones.fecha_salida)}</TableCell>
+              <TableCell align="right">{formatDateTime(reparaciones.fecha_entrega_cliente)}</TableCell>
               <TableCell align="right">{reparaciones.pagada? "si":"no"}</TableCell>
               <TableCell>
                 <Button
@@ -137,23 +154,24 @@ const ReparacionesList = () => {
                   color="info"
                   size="small"
                   onClick={() => handleEdit(reparaciones.id)}
-                  style={{ marginLeft: "0.5rem" }}
+                  // style={{ marginLeft: "0.5rem" }}
                   startIcon={<EditIcon />}
                 >
-                  Pagar Monto
+                  Modificar
                 </Button>
-
+                </TableCell>
+                <TableCell>
                 <Button
                   variant="contained"
                   color="error"
                   size="small"
                   onClick={() => handleDelete(reparaciones.id)}
-                  style={{ marginLeft: "0.5rem" }}
+                  // style={{ marginLeft: "0.5rem" }}
                   startIcon={<DeleteIcon />}
                 >
                   Eliminar
                 </Button>
-                <Button
+                {/* <Button
                   variant="contained"
                   color="secondary"
                   size="small"
@@ -162,13 +180,14 @@ const ReparacionesList = () => {
                   startIcon={<Calculate />}
                 >
                   Calcular Total
-                </Button>
+                </Button> */}
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
+    </>
   );
 };
 

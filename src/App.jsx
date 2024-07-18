@@ -12,6 +12,7 @@ import ReparacionesList from './components/ReparacionesList';
 import ReporteList from './components/ReporteList';
 import ReportePromedioList from './components/ReportePromedioList';
 import ReparacionTipoMotorList from './components/ReparacionTipoMotorList';
+import CalculaTotal from './components/CalculaTotal';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
               <Route path="/reportes/reparacion/motor/list" element={<ReparacionTipoMotorList/>} />
               <Route path="/reportes/promedio/list" element={<ReportePromedioList/>} />
               <Route path="/reparacion/list" element={<ReparacionList/>} />
+              <Route path="/calculatotal" element={<CalculaTotal/>} />
               <Route path="*" element={<NotFound/>} />
             </Routes>
           </div>

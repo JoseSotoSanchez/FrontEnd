@@ -8,7 +8,7 @@ console.log(payrollBackendPort)
 
 export default axios.create({
     // baseURL: `http://${payrollBackendServer}:${payrollBackendPort}`,
-    baseURL: `http://104.46.202.95:3000`,
+    baseURL: `http://localhost:3000`,
     headers: {
         'Content-Type': 'application/json'
     }

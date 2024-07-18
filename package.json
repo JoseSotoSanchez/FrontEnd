@@ -15,10 +15,14 @@
     "@mui/icons-material": "^5.15.6",
     "@mui/material": "^5.15.6",
     "@mui/x-charts": "^6.19.1",
+    "@testing-library/react": "^16.0.0",
     "axios": "^1.6.5",
+    "chromedriver": "^126.0.5",
+    "mocha": "^10.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.21.3"
+    "react-router-dom": "^6.21.3",
+    "selenium-webdriver": "^4.22.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

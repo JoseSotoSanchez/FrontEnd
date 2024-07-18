@@ -8,13 +8,11 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import reporteService from "../services/reporte.service";
-import Button from "@mui/material/Button";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { Typography } from '@mui/material';
 
 const ReportePromedioList = () => {
   const [reportes, setReportePromedio] = useState([]);
+  const [noDatos, setNoDatos] = useState('');
 
   const navigate = useNavigate();
 
@@ -26,6 +24,9 @@ const ReportePromedioList = () => {
           "Mostrando listado de reportes.",
           response.data
         );
+        if(response.data.length == 0){
+          setNoDatos("No se han encontrado reparaciones")
+        }
         setReportePromedio(response.data);
       })
       .catch((error) => {
@@ -46,6 +47,9 @@ const ReportePromedioList = () => {
 
       <h3>Detalle promedio tiempo reparaciones </h3>
       <hr />
+      <Typography variant="h7" style={{ marginTop: '20px' , color: 'red'}}>
+        {noDatos}
+      </Typography>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow>

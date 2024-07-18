@@ -11,7 +11,7 @@ import BuildCircle from "@mui/icons-material/BuildCircle";
 import Summarize from "@mui/icons-material/Summarize";
 import HomeIcon from "@mui/icons-material/Home";
 import { useNavigate } from "react-router-dom";
-import { CarRepair } from "@mui/icons-material";
+import { CalculateRounded, CarRepair } from "@mui/icons-material";
 
 export default function Sidemenu({ open, toggleDrawer }) {
   const navigate = useNavigate();
@@ -43,6 +43,13 @@ export default function Sidemenu({ open, toggleDrawer }) {
             <BuildCircle />
           </ListItemIcon>
           <ListItemText primary="Reparaciones" />
+        </ListItemButton>
+
+        <ListItemButton onClick={() => navigate("/calculatotal")}>
+          <ListItemIcon>
+            <CalculateRounded />
+          </ListItemIcon>
+          <ListItemText primary="Calcular total" />
         </ListItemButton>
 
         <ListItemButton onClick={() => navigate("/reportes/list")}>

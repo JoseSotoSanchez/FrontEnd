@@ -12,9 +12,13 @@ import Button from "@mui/material/Button";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import '../index.css';
+import { Typography } from '@mui/material';
+
 
 const VehiculosList = () => {
   const [vehiculos, setVehiculos] = useState([]);
+  const [noDatos, setNoDatos] = useState('');
 
   const navigate = useNavigate();
 
@@ -23,6 +27,9 @@ const VehiculosList = () => {
       .getAll()
       .then((response) => {
         console.log("Mostrando listado de todos los vehiculos.", response.data);
+        if(response.data.length == 0){
+          setNoDatos("No se han encontrado vehiculos cargados")
+        }
         setVehiculos(response.data);
       })
       .catch((error) => {
@@ -63,97 +70,102 @@ const VehiculosList = () => {
   };
 
   return (
-    <TableContainer component={Paper}>
-      <br />
-      <Link
-        to="/vehiculos/add"
-        style={{ textDecoration: "none", marginBottom: "1rem" }}
-      >
-        <Button
-          variant="contained"
-          color="primary"
-          startIcon={<PersonAddIcon />}
+    <>
+    <div>
+        <h2>Lista de reparaciones</h2>
+      </div>
+      <TableContainer component={Paper}>
+        <br />
+        <Link
+          to="/vehiculos/add"
+          style={{ textDecoration: "none", marginBottom: "1rem" }}
         >
-          Añadir Vehiculo
-        </Button>
-      </Link>
-      <br /> <br />
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
-        <TableHead>
-          <TableRow>
-          <TableCell align="left" sx={{ fontWeight: "bold" }}>
-              Id
-            </TableCell>
-            <TableCell align="left" sx={{ fontWeight: "bold" }}>
-              Patente
-            </TableCell>
-            <TableCell align="right" sx={{ fontWeight: "bold" }}>
-              Marca
-            </TableCell>
-            <TableCell align="right" sx={{ fontWeight: "bold" }}>
-              Modelo
-            </TableCell>
-            <TableCell align="right" sx={{ fontWeight: "bold" }}>
-              Tipo Vehiculo
-            </TableCell>
-            <TableCell align="left" sx={{ fontWeight: "bold" }}>
-              Año
-            </TableCell>
-            <TableCell align="left" sx={{ fontWeight: "bold" }}>
-              Tipo Motor
-            </TableCell>
-            <TableCell align="left" sx={{ fontWeight: "bold" }}>
-              Asientos
-            </TableCell>
-            <TableCell align="left" sx={{ fontWeight: "bold" }}>
-              Kilometraje
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {vehiculos.map((vehiculo) => (
-            <TableRow
-              key={vehiculo.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell align="left">{vehiculo.id_vehiculo}</TableCell>
-              <TableCell align="left">{vehiculo.patente}</TableCell>
-              <TableCell align="left">{vehiculo.marca}</TableCell>
-              <TableCell align="right">{vehiculo.modelo}</TableCell>
-              <TableCell align="right">{vehiculo.tipo}</TableCell>
-              <TableCell align="right">{vehiculo.anio_fabricacion}</TableCell>
-              <TableCell align="right">{vehiculo.tipo_motor}</TableCell>
-              <TableCell align="right">{vehiculo.numero_asientos}</TableCell>
-              <TableCell align="right">{vehiculo.kilometraje}</TableCell>
-              <TableCell>
-                <Button
-                  variant="contained"
-                  color="info"
-                  size="small"
-                  onClick={() => handleEdit(vehiculo.id_vehiculo)}
-                  style={{ marginLeft: "0.5rem" }}
-                  startIcon={<EditIcon />}
-                >
-                  Editar
-                </Button>
-
-                <Button
-                  variant="contained"
-                  color="error"
-                  size="small"
-                  onClick={() => handleDelete(vehiculo.id_vehiculo)}
-                  style={{ marginLeft: "0.5rem" }}
-                  startIcon={<DeleteIcon />}
-                >
-                  Eliminar
-                </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            className="custom-button"
+            startIcon={<PersonAddIcon />}
+          >
+            Añadir Vehiculo
+          </Button>
+        </Link>
+        <br /> <br />
+        <Typography variant="h7" style={{ marginTop: '20px' , color: 'red'}}>
+        {noDatos}
+      </Typography>
+        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="left" sx={{ fontWeight: "bold" }}>
+                Patente
+              </TableCell>
+              <TableCell align="right" sx={{ fontWeight: "bold" }}>
+                Marca
+              </TableCell>
+              <TableCell align="right" sx={{ fontWeight: "bold" }}>
+                Modelo
+              </TableCell>
+              <TableCell align="right" sx={{ fontWeight: "bold" }}>
+                Tipo Vehiculo
+              </TableCell>
+              <TableCell align="left" sx={{ fontWeight: "bold" }}>
+                Año
+              </TableCell>
+              <TableCell align="left" sx={{ fontWeight: "bold" }}>
+                Tipo Motor
+              </TableCell>
+              <TableCell align="left" sx={{ fontWeight: "bold" }}>
+                Asientos
+              </TableCell>
+              <TableCell align="left" sx={{ fontWeight: "bold" }}>
+                Kilometraje
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
+          </TableHead>
+          <TableBody>
+            {vehiculos.map((vehiculo) => (
+              <TableRow
+                key={vehiculo.id}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell align="left">{vehiculo.patente}</TableCell>
+                <TableCell align="left">{vehiculo.marca}</TableCell>
+                <TableCell align="right">{vehiculo.modelo}</TableCell>
+                <TableCell align="right">{vehiculo.tipo}</TableCell>
+                <TableCell align="right">{vehiculo.anio_fabricacion}</TableCell>
+                <TableCell align="right">{vehiculo.tipo_motor}</TableCell>
+                <TableCell align="right">{vehiculo.numero_asientos}</TableCell>
+                <TableCell align="right">{vehiculo.kilometraje}</TableCell>
+                <TableCell>
+                  <Button
+                    variant="contained"
+                    color="info"
+                    size="small"
+                    onClick={() => handleEdit(vehiculo.id_vehiculo)}
+                    style={{ marginLeft: "0.5rem" }}
+                    startIcon={<EditIcon />}
+                  >
+                    Editar
+                  </Button>
+
+                  <Button
+                    variant="contained"
+                    color="error"
+                    size="small"
+                    onClick={() => handleDelete(vehiculo.id_vehiculo)}
+                    style={{ marginLeft: "0.5rem" }}
+                    startIcon={<DeleteIcon />}
+                  >
+                    Eliminar
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      </>
+    );
 };
 
 export default VehiculosList;

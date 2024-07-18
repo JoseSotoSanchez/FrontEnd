@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, React } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import vehiculoService from "../services/vehiculos.service";
 import Box from "@mui/material/Box";
@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import SaveIcon from "@mui/icons-material/Save";
-import { Container, TableContainer } from "@mui/material";
+import Modal from "../components/modal/modal";
 
 const AddEditVehiculo = () => {
   const [patente, setPatente] = useState("");
@@ -22,6 +22,7 @@ const AddEditVehiculo = () => {
   const { id } = useParams();
   const [titleVehiculoForm, setTitleVehiculoForm] = useState("");
   const navigate = useNavigate();
+  const [errors, setErrors] = useState({}); 
 
   const saveVehiculo = (e) => {
     e.preventDefault();
@@ -58,6 +59,71 @@ const AddEditVehiculo = () => {
     }
   };
 
+  const validate = () => {
+    let tempErrors = {};
+    if (!patente) tempErrors.patente = "Patente es requerida.";
+    if (patente.length != 6) tempErrors.patente = "Patente es debe tener formato AABB11 ó EE1122.";
+    if (!marca) tempErrors.marca = "Marca es requerida.";
+    if (!modelo) tempErrors.modelo = "Modelo es requerido.";
+    if (!tipo) tempErrors.tipo = "Tipo es requerido.";
+    if (!anio_fabricacion) tempErrors.anio_fabricacion = "Año de fabricación es requerido.";
+    if (!tipo_motor) tempErrors.tipo_motor = "Tipo de motor es requerido.";
+    if (!numero_asientos) tempErrors.numero_asientos = "Número de asientos es requerido.";
+    if (!kilometraje) tempErrors.kilometraje = "Kilometraje es requerido.";
+    setErrors(tempErrors);
+    return Object.keys(tempErrors).length === 0;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validate()) {
+      saveVehiculo(e);
+    }
+  };
+
+  const handlePatenteChange = (e) => {
+    const value = e.target.value.toUpperCase();
+    const regex = /^[A-Z0-9]*$/;
+    if (regex.test(value)) {
+      setPatente(value);
+      setErrors({ ...errors, patente: '' });
+    } else {
+      setErrors({ ...errors, patente: 'Solo letras y números en mayúsculas' });
+    }
+  };
+  const handleAsientosChange = (e) => {
+    const value = e.target.value;
+    if (value.length <= 1) {
+      setAsientos(value);
+      setErrors({ ...errors, numero_asientos: '' });
+    } else {
+      setErrors({ ...errors, numero_asientos: 'Máximo 1 dígito' });
+    }
+  };
+  const handleKilometrajeChange = (e) => {
+    const value = e.target.value;
+    if (value.length <= 6) {
+      setKilometraje(value);
+      setErrors({ ...errors, kilometraje: '' });
+    } else {
+      setErrors({ ...errors, kilometraje: 'Máximo 6 dígitos' });
+    }
+  };
+  const handleAnioChange = (e) => {
+    const value = e.target.value;
+    const currentYear = new Date().getFullYear();
+    if (value.length <= 4) {
+      if (value <= currentYear + 1) {
+        setAnio(value);
+        setErrors({ ...errors, anio_fabricacion: '' });
+      } else {
+        setErrors({ ...errors, anio_fabricacion: 'Máximo año posterior al año actual' });
+      }
+    } else {
+      setErrors({ ...errors, anio: 'Máximo 4 dígitos' });
+    }
+  };
+
   useEffect(() => {
     if (id) {
       setTitleVehiculoForm("Editar Vehiculo");
@@ -83,150 +149,178 @@ const AddEditVehiculo = () => {
   }, []);
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      component="form"
-    >
-      <h3> {titleVehiculoForm} </h3>
-      <hr />
-      <form>
-        <FormControl fullWidth>
-          <TextField
-            id="patente"
-            label="patente"
-            value={patente}
-            variant="standard"
-            onChange={(e) => setPatente(e.target.value)}
-            helperText="Ej. AABB99 o AA1122"
-          />
-        </FormControl>
+    <>
+      <Modal id='addEditVehiculo-modal'>
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          component="form"
+        >
+          <h3> {titleVehiculoForm} </h3>
+          <form className="w-[450px]">
+          <FormControl fullWidth>
+            <TextField
+              id="patente"
+              label="Patente. Ej. AABB99 o AA1122"
+              value={patente}
+              variant="standard"
+              onChange={handlePatenteChange}
+              helperText={errors.patente}
+              error={Boolean(errors.patente)}
+              required
+              inputProps={{ maxLength: 6 }}
+            />
+          </FormControl>
 
-        <FormControl fullWidth>
-          <TextField
-            id="marca"
-            label="marca"
-            value={marca}
-            variant="standard"
-            onChange={(e) => setMarca(e.target.value)}
-          />
-        </FormControl>
+          <FormControl fullWidth>
+            <TextField
+              id="marca"
+              label="Marca. Ej. Toyota"
+              value={marca}
+              variant="standard"
+              onChange={(e) => setMarca(e.target.value)}
+              helperText={errors.marca}
+              error={Boolean(errors.marca)}
+              required
+              inputProps={{ maxLength: 10 }}
+            />
+          </FormControl>
 
-        <FormControl fullWidth>
-          <TextField
-            id="modelo"
-            label="modelo"
-            value={modelo}
-            variant="standard"
-            onChange={(e) => setModelo(e.target.value)}
-          />
-        </FormControl>
+          <FormControl fullWidth>
+            <TextField
+              id="modelo"
+              label="Modelo del vehiculo. Ej. Corolla"
+              value={modelo}
+              variant="standard"
+              onChange={(e) => setModelo(e.target.value)}
+              helperText={errors.modelo}
+              error={Boolean(errors.modelo)}
+              required
+              inputProps={{ maxLength: 10 }}
+            />
+          </FormControl>
 
-        <FormControl fullWidth>
-          <TextField
-            id="tipo"
-            label="tipo"
-            value={tipo}
-            select
-            variant="standard"
-            defaultValue="Tipos"
-            onChange={(e) => setTipo(e.target.value)}
-            style={{ width: "100%" }}
-          >
-            <MenuItem value={"SUV"}>SUV</MenuItem>
-            <MenuItem value={"Hatchback"}>Hatchback</MenuItem>
-            <MenuItem value={"Sedan"}>Sedán</MenuItem>
-             <MenuItem value={"Pickup"}>Pickup</MenuItem>
-             <MenuItem value={"Furgoneta"}>Furgoneta</MenuItem>
-          </TextField>
-        </FormControl>
+          <FormControl fullWidth>
+            <TextField
+              id="tipo"
+              label="Seleccionar tipo"
+              value={tipo}
+              select
+              variant="standard"
+              onChange={(e) => setTipo(e.target.value)}
+              helperText={errors.tipo}
+              error={Boolean(errors.tipo)}
+              required
+            >
+              <MenuItem value={"SUV"}>SUV</MenuItem>
+              <MenuItem value={"Hatchback"}>Hatchback</MenuItem>
+              <MenuItem value={"Sedan"}>Sedán</MenuItem>
+              <MenuItem value={"Pickup"}>Pickup</MenuItem>
+              <MenuItem value={"Furgoneta"}>Furgoneta</MenuItem>
+            </TextField>
+          </FormControl>
 
-        <FormControl fullWidth>
-          <TextField
-            id="anio_fabricacion"
-            label="anio_fabricacion"
-            type="number"
-            value={anio_fabricacion}
-            variant="standard"
-            onChange={(e) => setAnio(e.target.value)}
-          />
-        </FormControl>
+          <FormControl fullWidth>
+            <TextField
+              id="anio_fabricacion"
+              label="Año de fabricación. Ej. 2010"
+              type="number"
+              value={anio_fabricacion}
+              variant="standard"
+              onChange={handleAnioChange}
+              helperText={errors.anio_fabricacion}
+              error={Boolean(errors.anio_fabricacion)}
+              required
+            />
+          </FormControl>
 
-        <FormControl fullWidth>
-          <TextField
-            id="tipo_motor"
-            label="tipo_motor"
-            value={tipo_motor}
-            select
-            variant="standard"
-            defaultValue="Tipo motor"
-            onChange={(e) => setTipoMotor(e.target.value)}
-            style={{ width: "100%" }}
-          >
-            <MenuItem value={"Gasolina"}>Gasolina</MenuItem>
-            <MenuItem value={"diesel"}>Diesel</MenuItem>
-            <MenuItem value={"Hibrido"}>Hibrido</MenuItem>
-             <MenuItem value={"Electrico"}>Electrico</MenuItem>
-          </TextField>
-        </FormControl>
+          <FormControl fullWidth>
+            <TextField
+              id="tipo_motor"
+              label="Seleccione tipo de motor"
+              value={tipo_motor}
+              select
+              variant="standard"
+              onChange={(e) => setTipoMotor(e.target.value)}
+              helperText={errors.tipo_motor}
+              error={Boolean(errors.tipo_motor)}
+              required
+            >
+              <MenuItem value={"Gasolina"}>Gasolina</MenuItem>
+              <MenuItem value={"diesel"}>Diesel</MenuItem>
+              <MenuItem value={"Hibrido"}>Hibrido</MenuItem>
+              <MenuItem value={"Electrico"}>Electrico</MenuItem>
+            </TextField>
+          </FormControl>
 
-        <FormControl fullWidth>
-          <TextField
-            id="numero_asientos"
-            label="numero_asientos"
-            type="number"
-            value={numero_asientos}
-            variant="standard"
-            onChange={(e) => setAsientos(e.target.value)}
-          />
-        </FormControl>
+          <FormControl fullWidth>
+            <TextField
+              id="numero_asientos"
+              label="Cantidad de asientos. Ej. 5"
+              type="number"
+              value={numero_asientos}
+              variant="standard"
+              onChange={handleAsientosChange}
+              helperText={errors.numero_asientos}
+              error={Boolean(errors.numero_asientos)}
+              required
+            />
+          </FormControl>
 
-        <FormControl fullWidth>
-          <TextField
-            id="kilometraje"
-            label="kilometraje"
-            type="number"
-            value={kilometraje}
-            variant="standard"
-            onChange={(e) => setKilometraje(e.target.value)}
-          />
-        </FormControl>
+          <FormControl fullWidth>
+            <TextField
+              id="kilometraje"
+              label="Kilometraje actual. Ej. 440000"
+              type="number"
+              value={kilometraje}
+              variant="standard"
+              onChange={handleKilometrajeChange}
+              helperText={errors.kilometraje}
+              error={Boolean(errors.kilometraje)}
+              required
+            />
+          </FormControl>
 
-        {/* <FormControl fullWidth>
-          <TextField
-            id="category"
-            label="Category"
-            value={category}
-            select
-            variant="standard"
-            defaultValue="A"
-            onChange={(e) => setCategory(e.target.value)}
-            style={{ width: "25%" }}
-          >
-            <MenuItem value={"A"}>A</MenuItem>
-            <MenuItem value={"B"}>B</MenuItem>
-            <MenuItem value={"C"}>C</MenuItem>
-          </TextField>
-        </FormControl> */}
+            {/* <FormControl fullWidth>
+              <TextField
+                id="category"
+                label="Category"
+                value={category}
+                select
+                variant="standard"
+                defaultValue="A"
+                onChange={(e) => setCategory(e.target.value)}
+                style={{ width: "25%" }}
+              >
+                <MenuItem value={"A"}>A</MenuItem>
+                <MenuItem value={"B"}>B</MenuItem>
+                <MenuItem value={"C"}>C</MenuItem>
+              </TextField>
+            </FormControl> */}
+             </form>
+          <Box marginTop="10px" display="flex" flexDirection="row" alignItems="center" justifyContent="flex-start" gap="1rem">
+            <FormControl>
+              <Button
+                variant="contained"
+                color="info"
+                onClick={(e) => handleSubmit(e)}
+                startIcon={<SaveIcon />}
+              >
+                Guardar
+              </Button>
+            </FormControl>
 
-        <FormControl>
-          <br />
-          <Button
-            variant="contained"
-            color="info"
-            onClick={(e) => saveVehiculo(e)}
-            style={{ marginLeft: "0.5rem" }}
-            startIcon={<SaveIcon />}
-          >
-            Grabar
-          </Button>
-        </FormControl>
-      </form>
-      <hr />
-      <Link to="/vehiculos/list">Back to List</Link>
-    </Box>
+            <Link to="/vehiculos/list" style={{ textDecoration: "none" }}>
+              <Button variant="outlined" color="primary">
+                Volver
+              </Button>
+            </Link>
+          </Box>
+        </Box>
+      </Modal>
+    </>
   );
 };
 

@@ -84,7 +84,7 @@ const Home = () => {
                 <TableCell align="right">{reparacion.modelo}</TableCell>
                 <TableCell align="right">{reparacion.anio}</TableCell>
                 <TableCell align="right">{reparacion.reparacion}</TableCell>
-                <TableCell align="right">{formatDateTime(reparacion.fecha_reparacion)}</TableCell>
+                <TableCell align="right">{formatDateTime(reparacion.fechaReparacion)}</TableCell>
               </TableRow>
             ))}
           </TableBody>

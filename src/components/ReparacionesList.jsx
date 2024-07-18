@@ -142,11 +142,11 @@ const ReparacionesList = () => {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell align="right">{reparaciones.patente}</TableCell>
-              <TableCell align="right">{reparaciones.tipo_reparacion}</TableCell>
-              <TableCell align="right">{reparaciones.monto_total}</TableCell>
-              <TableCell align="right">{formatDateTime(reparaciones.fecha_ingreso)}</TableCell>
-              <TableCell align="right">{formatDateTime(reparaciones.fecha_salida)}</TableCell>
-              <TableCell align="right">{formatDateTime(reparaciones.fecha_entrega_cliente)}</TableCell>
+              <TableCell align="right">{reparaciones.tipoReparacion}</TableCell>
+              <TableCell align="right">{reparaciones.montoTotal}</TableCell>
+              <TableCell align="right">{formatDateTime(reparaciones.fechaIngreso)}</TableCell>
+              <TableCell align="right">{formatDateTime(reparaciones.fechaSalida)}</TableCell>
+              <TableCell align="right">{formatDateTime(reparaciones.fechaEntregaCliente)}</TableCell>
               <TableCell align="right">{reparaciones.pagada? "si":"no"}</TableCell>
               <TableCell>
                 <Button
